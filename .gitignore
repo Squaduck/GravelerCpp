@@ -2,4 +2,5 @@
 !*.cpp
 !*.h
 !.gitignore
+!*.md
 # this is bad.
