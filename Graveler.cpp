@@ -5,7 +5,6 @@
 #include <random>
 #include <future>
 #include <bit>
-#include <bitset>
 
 void roll_rounds(long count, std::promise<uint8_t> &&promise)
 {
