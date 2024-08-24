@@ -1,3 +1,7 @@
+// This is directly stolen from a very bad, no good old project.
+// The only modification I made was changing from lltoa to sprintf
+// There are weird decisions made in here. I don't know why I made them.
+
 #pragma once
 
 #include <stdlib.h>
@@ -14,7 +18,7 @@ auto since(std::chrono::time_point<clock_t, duration_t> const &start)
     return std::chrono::duration_cast<result_t>(clock_t::now() - start);
 }
 
-const long long monthLengthInMicroseconds = 2629746000000;
+const int64_t monthLengthInMicroseconds = 2629746000000;
 // 30.436875 days
 
 // takes a long long, and returns something like "1 months, 5 days, 17 hours, 28 minutes, 34 seconds, 690 miliseconds, and 125 microseconds"
