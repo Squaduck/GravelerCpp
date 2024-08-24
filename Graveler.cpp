@@ -6,7 +6,11 @@
 #include <future>
 #include <bit>
 
-void rollRoundsPromise(long count, std::promise<uint8_t> &&promise)
+// This came after the MT version, funnily enough.
+// I wanted to check how effective my multithreading was.
+// On my "8-core" AMD FX-8350 the multithreaded version is ~7.22 times faster.
+// I think that's  pretty decent overhead.
+uint8_t rollRounds(int32_t count)
 {
     std::random_device rd; // secure, but slow random to seed faster random
     std::default_random_engine randEngine(rd());
@@ -15,7 +19,32 @@ void rollRoundsPromise(long count, std::promise<uint8_t> &&promise)
     uint8_t localTotal;
     uint8_t bestLocalTotal = 0;
 
-    for (int x = 0; x < count; x++)
+    for (int32_t x = 0; x < count; x++)
+    {
+        localTotal = 0;
+        for (uint32_t i = 0; i < 231 / 64; i++)
+        {
+            localTotal += std::__popcount(uniformDistribution(randEngine) & uniformDistribution(randEngine));
+        }
+        // 231 % 64 = 39. The loop above leaves 39 dice rolls unaccounted for. this makes up for them. I explain this more (maybe worse) in the C# version.
+        localTotal += std::__popcount((uniformDistribution(randEngine) & uniformDistribution(randEngine)) & 0b111111111111111111111111111111111111111);
+        if (localTotal > bestLocalTotal)
+            bestLocalTotal = localTotal;
+    }
+
+    return bestLocalTotal;
+}
+
+void rollRoundsPromise(int32_t count, std::promise<uint8_t> &&promise)
+{
+    std::random_device rd; // secure, but slow random to seed faster random
+    std::default_random_engine randEngine(rd());
+    std::uniform_int_distribution<uint64_t> uniformDistribution(0, UINT64_MAX);
+
+    uint8_t localTotal;
+    uint8_t bestLocalTotal = 0;
+
+    for (int32_t x = 0; x < count; x++)
     {
         localTotal = 0;
         for (uint32_t i = 0; i < 231 / 64; i++)
