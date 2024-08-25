@@ -4,7 +4,7 @@ This was scrapped together at the dead of night by mangling an existing multi th
 
 Other than the lack of C#'s fancy dancy Parallel.For loop, this is almost exactly the same. It is still multi threaded, it still uses some semblance of thread local variables, and it still uses bit manipulation.
 
-The main differences that I can think of are the fact that this version generates random *unsigned* longs, allowing more dice rolls per random, and the fact that it is running one method call per thread instead of using a more flexable thread pool.
+The main differences that I can think of are the fact that this version generates random *unsigned* longs, allowing more dice rolls per random, and the fact that it is running one method call per thread instead of using a more flexible thread pool.
 
 ## How to run
 ### Clone this repo
@@ -46,7 +46,7 @@ or
 
 `clang++ Graveler.cpp -o Graveler -std=c++20 -Ofast`
 
-- (clang probably not in build-essential. May need to be downloaded seperately.)
+- (clang probably not in build-essential. May need to be downloaded separately.)
 
 in the project directory.
 

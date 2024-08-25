@@ -69,10 +69,6 @@ uint8_t MTRollRounds(uint32_t count)
     std::vector<std::promise<uint8_t>> promises(threadCount, std::allocator<std::promise<uint8_t>>());
     std::vector<std::future<uint8_t>> futures(threadCount, std::allocator<std::future<uint8_t>>());
 
-    //std::thread threads[threadCount];
-    //std::promise<uint8_t> promises[threadCount];
-    //std::future<uint8_t> futures[threadCount];
-
     uint32_t leftover = count % threadCount;
     uint32_t baseThreadCount = (count - leftover) / threadCount;
 
