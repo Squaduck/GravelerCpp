@@ -10,15 +10,46 @@ The main differences that I can think of are the fact that this version generate
 ### Clone this repo
 either run `git clone https://github.com/Squaduck/GravelerCpp.git` or click the big green "<> Code" button above and click "Download ZIP"
 ### Build the program
-`cd` into the cloned directory then run `g++ Graveler.cpp -o Graveler -O3` to build it with optimizations. 
-
-Other compilers *seem* to work, but no promises.
+See Below for either [Windows](#windows) or [Linux](#linux-or-other)
 ### Run the compiled executable
 in the cloned directory, simply run `./Graveler`
 
-## Compatibility
-I cannot guarantee that this will compile on any given system. I don't know if this will even work on Windows.
+## Compilation and Compatibility
+- **This project has not been extensively tested.**
+### Windows
+#### Using the Visual Studio Build tools
+- Found [Here](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022)
+- You *should* only need the "MSVC vXXX - VS 20XX C++ {arch} build tools (latest)" component. I'm not sure if it needs anything else.
 
-At the very least I was able to compile with clang? This hasn't been tested with msvc.
+Using the Native Tools Command Prompt, navigate to the cloned project directory and run 
 
-## TLDR: good luck.
+`cl /std:c++20 /O2 /EHsc Graveler.cpp`
+
+- (The VS Build Tools also include Clang, but I couldn't get it to work for me on windows.)
+
+#### Using MSYS2
+- Found [Here](https://www.msys2.org/)
+- Need to run `pacman -S mingw-w64-ucrt-x86_64-gcc` in any MSYS2 Command Prompt to install the GCC suite.
+
+Using the MSYS2 UCRT64 Command Prompt, Navigate to the cloned project directory and run
+
+`g++ Graveler.cpp -o Graveler -march=native -Ofast -std=c++20`
+
+- (MSYS runs in a linux-esque environment where "/" is the root of the filesystem and directories are marked with forward slashes. To navigate to the project, `cd` to "/{lowercase drive letter}/{path to project}" )
+- (MSYS also includes a version of clang. I didn't try it because I was running out of space on my VM's virtual disk, and didn't want a second copy of clang.)
+### Linux (or other?)
+Install your distro's build-essential package (or equivalent) and run either
+
+`g++ Graveler.cpp -o Graveler -march=native -Ofast -std=c++20`
+
+or
+
+`clang++ Graveler.cpp -o Graveler -std=c++20 -Ofast`
+
+- (clang probably not in build-essential. May need to be downloaded seperately.)
+
+in the project directory.
+
+## Looking at it in an IDE
+- Ensure that your IDE is set to the C++20 standard.
+- Don't judge too hard. This is scrapped together from stuff I never expected to be public. Its a learning project, and I've definitely learned. (Mostly that C++ is tedious.)

@@ -5,6 +5,7 @@
 #include <random>
 #include <future>
 #include <bit>
+#include <inttypes.h>
 
 // This came after the MT version, funnily enough.
 // I wanted to check how effective my multithreading was.
@@ -24,10 +25,10 @@ uint8_t rollRounds(int32_t count)
         localTotal = 0;
         for (uint32_t i = 0; i < 231 / 64; i++)
         {
-            localTotal += std::__popcount(uniformDistribution(randEngine) & uniformDistribution(randEngine));
+            localTotal += std::popcount(uniformDistribution(randEngine) & uniformDistribution(randEngine));
         }
         // 231 % 64 = 39. The loop above leaves 39 dice rolls unaccounted for. this makes up for them. I explain this more (maybe worse) in the C# version.
-        localTotal += std::__popcount((uniformDistribution(randEngine) & uniformDistribution(randEngine)) & 0b111111111111111111111111111111111111111);
+        localTotal += std::popcount((uniformDistribution(randEngine) & uniformDistribution(randEngine)) & 0b111111111111111111111111111111111111111);
         if (localTotal > bestLocalTotal)
             bestLocalTotal = localTotal;
     }
@@ -49,10 +50,10 @@ void rollRoundsPromise(int32_t count, std::promise<uint8_t> &&promise)
         localTotal = 0;
         for (uint32_t i = 0; i < 231 / 64; i++)
         {
-            localTotal += std::__popcount(uniformDistribution(randEngine) & uniformDistribution(randEngine));
+            localTotal += std::popcount(uniformDistribution(randEngine) & uniformDistribution(randEngine));
         }
         // 231 % 64 = 39. The loop above leaves 39 dice rolls unaccounted for. this makes up for them. I explain this more (maybe worse) in the C# version.
-        localTotal += std::__popcount((uniformDistribution(randEngine) & uniformDistribution(randEngine)) & 0b111111111111111111111111111111111111111);
+        localTotal += std::popcount((uniformDistribution(randEngine) & uniformDistribution(randEngine)) & 0b111111111111111111111111111111111111111);
         if (localTotal > bestLocalTotal)
             bestLocalTotal = localTotal;
     }
@@ -64,9 +65,13 @@ uint8_t MTRollRounds(uint32_t count)
 {
     unsigned int threadCount = std::thread::hardware_concurrency() >= count ? count : std::thread::hardware_concurrency(); // Only use all threads if there are more than the count
 
-    std::thread threads[threadCount];
-    std::promise<uint8_t> promises[threadCount];
-    std::future<uint8_t> futures[threadCount];
+    std::vector<std::thread> threads(threadCount, std::allocator<std::thread>());
+    std::vector<std::promise<uint8_t>> promises(threadCount, std::allocator<std::promise<uint8_t>>());
+    std::vector<std::future<uint8_t>> futures(threadCount, std::allocator<std::future<uint8_t>>());
+
+    //std::thread threads[threadCount];
+    //std::promise<uint8_t> promises[threadCount];
+    //std::future<uint8_t> futures[threadCount];
 
     uint32_t leftover = count % threadCount;
     uint32_t baseThreadCount = (count - leftover) / threadCount;
@@ -102,5 +107,5 @@ int main(int argc, char *argv[])
     auto startTime = std::chrono::steady_clock::now();
     uint8_t result = MTRollRounds(100000000);
     auto elapsedTime = since(startTime);
-    printf("Highest number of 1s rolled in %d rounds: %d\nRan in %s\n", 100000000, result, humanFriendlyTime(elapsedTime.count()).c_str());
+    printf("Highest number of 1s rolled in %d rounds: %" PRId8 "\nRan in %s\n", 100000000, result, humanFriendlyTime(elapsedTime.count()).c_str());
 }

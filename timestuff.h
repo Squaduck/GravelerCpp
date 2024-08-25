@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <chrono>
 #include <string>
+#include <inttypes.h>
 
 template <
     class result_t = std::chrono::microseconds,
@@ -30,7 +31,7 @@ std::string humanFriendlyLongTime(int64_t time)
     std::string result("");
 
     char number[10];
-    sprintf(number, "%ld", timeSpan % 1000);
+    sprintf(number, "%" PRId64, timeSpan % 1000);
     result.append(number);
     result.append(" microseconds");
 
@@ -40,7 +41,7 @@ std::string humanFriendlyLongTime(int64_t time)
     timeSpan = (timeSpan - (timeSpan % 1000)) / 1000;
 
     result.insert(0, " miliseconds, and ");
-    sprintf(number, "%ld", timeSpan % 1000);
+    sprintf(number, "%" PRId64, timeSpan % 1000);
     result.insert(0, number);
 
     if (timeSpan < 1000)
@@ -49,7 +50,7 @@ std::string humanFriendlyLongTime(int64_t time)
     timeSpan = (timeSpan - (timeSpan % 1000)) / 1000;
 
     result.insert(0, " seconds, ");
-    sprintf(number, "%ld", timeSpan % 60);
+    sprintf(number, "%" PRId64, timeSpan % 60);
     result.insert(0, number);
 
     if (timeSpan < 60)
@@ -58,7 +59,7 @@ std::string humanFriendlyLongTime(int64_t time)
     timeSpan = (timeSpan - (timeSpan % 60)) / 60;
 
     result.insert(0, " minutes, ");
-    sprintf(number, "%ld", timeSpan % 60);
+    sprintf(number, "%" PRId64, timeSpan % 60);
     result.insert(0, number);
 
     if (timeSpan < 60)
@@ -67,7 +68,7 @@ std::string humanFriendlyLongTime(int64_t time)
     timeSpan = (timeSpan - (timeSpan % 60)) / 60;
 
     result.insert(0, " hours, ");
-    sprintf(number, "%ld", timeSpan % 24);
+    sprintf(number, "%" PRId64, timeSpan % 24);
     result.insert(0, number);
 
     if (timeSpan < 24)
@@ -76,7 +77,7 @@ std::string humanFriendlyLongTime(int64_t time)
     timeSpan = (timeSpan - (timeSpan % 24)) / 24;
 
     result.insert(0, " days, ");
-    sprintf(number, "%ld", timeSpan % 31);
+    sprintf(number, "%" PRId64, timeSpan % 31);
     result.insert(0, number);
 
     if (time < monthLengthInMicroseconds)
@@ -85,7 +86,7 @@ std::string humanFriendlyLongTime(int64_t time)
     timeSpan = (time - (time % monthLengthInMicroseconds)) / monthLengthInMicroseconds;
 
     result.insert(0, " months, ");
-    sprintf(number, "%ld", timeSpan % 12);
+    sprintf(number, "%" PRId64, timeSpan % 12);
     result.insert(0, number);
 
     if (timeSpan < 12)
@@ -94,7 +95,7 @@ std::string humanFriendlyLongTime(int64_t time)
     timeSpan = (timeSpan - (timeSpan % 12)) / 12;
 
     result.insert(0, " years, ");
-    sprintf(number, "%ld", timeSpan);
+    sprintf(number, "%" PRId64, timeSpan);
     result.insert(0, number);
 
     return result;
@@ -107,7 +108,7 @@ std::string humanFriendlyTime(int64_t timeSpan)
     std::string result("");
 
     char number[10];
-    sprintf(number, "%ld", timeSpan % 1000);
+    sprintf(number, "%" PRId64, timeSpan % 1000);
     result.append(number);
     result.append(" microseconds");
 
@@ -117,7 +118,7 @@ std::string humanFriendlyTime(int64_t timeSpan)
     timeSpan = (timeSpan - (timeSpan % 1000)) / 1000;
 
     result.insert(0, " miliseconds, and ");
-    sprintf(number, "%ld", timeSpan % 1000);
+    sprintf(number, "%" PRId64, timeSpan % 1000);
     result.insert(0, number);
 
     if (timeSpan < 1000)
@@ -126,7 +127,7 @@ std::string humanFriendlyTime(int64_t timeSpan)
     timeSpan = (timeSpan - (timeSpan % 1000)) / 1000;
 
     result.insert(0, " seconds, ");
-    sprintf(number, "%ld", timeSpan % 60);
+    sprintf(number, "%" PRId64, timeSpan % 60);
     result.insert(0, number);
     if (timeSpan < 60)
         return result;
@@ -134,7 +135,7 @@ std::string humanFriendlyTime(int64_t timeSpan)
     timeSpan = (timeSpan - (timeSpan % 60)) / 60;
 
     result.insert(0, " minutes, ");
-    sprintf(number, "%ld", timeSpan % 60);
+    sprintf(number, "%" PRId64, timeSpan % 60);
     result.insert(0, number);
 
     if (timeSpan < 60)
@@ -143,7 +144,7 @@ std::string humanFriendlyTime(int64_t timeSpan)
     timeSpan = (timeSpan - (timeSpan % 60)) / 60;
 
     result.insert(0, " hours, ");
-    sprintf(number, "%ld", timeSpan % 24);
+    sprintf(number, "%" PRId64, timeSpan % 24);
     result.insert(0, number);
 
     if (timeSpan < 24)
@@ -152,7 +153,7 @@ std::string humanFriendlyTime(int64_t timeSpan)
     timeSpan = (timeSpan - (timeSpan % 24)) / 24;
 
     result.insert(0, " days, ");
-    sprintf(number, "%ld", timeSpan % 30);
+    sprintf(number, "%" PRId64, timeSpan % 30);
     result.insert(0, number);
 
     if (timeSpan < 30)
@@ -161,7 +162,7 @@ std::string humanFriendlyTime(int64_t timeSpan)
     timeSpan = (timeSpan - (timeSpan % 30)) / 30;
 
     result.insert(0, " months, ");
-    sprintf(number, "%ld", timeSpan % 12);
+    sprintf(number, "%" PRId64, timeSpan % 12);
     result.insert(0, number);
 
     if (timeSpan < 12)
@@ -170,7 +171,7 @@ std::string humanFriendlyTime(int64_t timeSpan)
     timeSpan = (timeSpan - (timeSpan % 12)) / 12;
 
     result.insert(0, " years, ");
-    sprintf(number, "%ld", timeSpan);
+    sprintf(number, "%" PRId64, timeSpan);
     result.insert(0, number);
 
     return result;
