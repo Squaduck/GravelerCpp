@@ -1,4 +1,5 @@
 # I am not proud of any of the code in this repo.
+# Also, this is much, much, much slower than my C# version.
 ## It's honestly a miracle that it even compiles.
 This was scrapped together at the dead of night by mangling an existing multi threaded dice rolling program I had lying around to do the same thing as the C# version. 
 
